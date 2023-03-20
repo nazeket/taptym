@@ -3,6 +3,7 @@ package controllers
 import (
 	"app/models"
 	"app/utils"
+	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -14,6 +15,8 @@ import (
 )
 
 type AuthController struct{}
+type ProductController struct {
+}
 
 func (AuthController) Login(c echo.Context) error {
 	var data map[string]string
@@ -110,4 +113,39 @@ func (AuthController) User(c echo.Context) error {
 	utils.DB.Where("id = ?", uid).Select("id", "email").First(&user)
 
 	return c.JSON(http.StatusOK, echo.Map{"user": user})
+}
+
+func (ProductController) CreateProduct(c echo.Context) error {
+	var data map[string]string
+
+	if err := c.Bind(&data); err != nil {
+		return c.JSON(http.StatusBadRequest, echo.Map{"message": "invalid JSON"})
+	}
+	product := models.Product{
+		Title:       data["title"],
+		Description: data["description"],
+	}
+
+	result := utils.DB.Create(&product)
+
+	if result.Error != nil {
+		return c.JSON(http.StatusForbidden, echo.Map{"message": result.Error.Error()})
+	}
+
+	return c.JSON(http.StatusOK, echo.Map{"message": "successfully created product"})
+}
+
+func (ProductController) GetProductList(c echo.Context) error {
+	var modelInstance []models.Product
+	utils.DB.Find(&modelInstance)
+	fmt.Println("console")
+	fmt.Println(modelInstance)
+	return c.JSON(http.StatusOK, modelInstance)
+}
+
+func (ProductController) SearchByQuery(c echo.Context) error {
+	term := c.QueryParam("term")
+	var products []models.Product
+	utils.DB.Where("title LIKE ?", "%"+term+"%").Find(&products)
+	return c.JSON(http.StatusOK, products)
 }

@@ -26,12 +26,6 @@ const store = useStore()
 const pageBody = ref(null)
 const pageHeader = ref(null)
 onMounted(async() => {
-  await Promise.allSettled([
-    await store.dispatch('getCategories'),
-    await store.dispatch('getAnnouncements'),
-    await store.dispatch('getFavorites'),
-    await store.dispatch('getCityList')
-  ])
   if (pageHeader.value !== null) {
     pageBody.value.style.maxHeight = `${screen.height - pageHeader.value.offsetHeight - 64}px`
   }

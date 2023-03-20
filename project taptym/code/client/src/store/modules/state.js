@@ -12,6 +12,9 @@ export const state = {
     LoginCredentials: {...new LoginCredentials()},
     RegisterCredentials: {...new RegisterCredentials()},
     tradeProductHeader: '',
+    search: {
+        term: ''
+    },
     ProfileData: {...new ProfileData()},
     Statement: {...new Statement()},
     contents: [],

@@ -20,9 +20,15 @@ func main() {
 	e.Use(echomiddleware.Logger())
 	e.Use(echomiddleware.Recover())
 
+	productRouter := e.Group("/product")
+	productController := new(controllers.ProductController)
+
 	authRouter := e.Group("/auth")
 	authController := new(controllers.AuthController)
 
+	productRouter.POST("/create-product", productController.CreateProduct)
+	productRouter.GET("/get-product-list", productController.GetProductList)
+	productRouter.GET("/search", productController.SearchByQuery)
 	authRouter.GET("/user", authController.User, middleware.JWTAuth)
 	authRouter.GET("/logout", authController.Logout)
 	authRouter.POST("/signup", authController.Signup)

@@ -21,7 +21,18 @@ class Api {
             data
         })
     }
-
+    async fetchProductList(){
+        return await this.request({
+            method: 'get',
+            url: '/product/get-product-list'
+        })
+    }
+    async searchProduct(term){
+        return await this.request({
+            method: 'get',
+            url: `/product/search?term=${term}`
+        })
+    }
     async getCategories() {
         return await this.request({
             method: 'get',

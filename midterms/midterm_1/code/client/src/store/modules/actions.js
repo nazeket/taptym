@@ -24,8 +24,43 @@ export const actions = {
             const data = context.state.LoginCredentials
             await api.login(data)
             toaster.success('Successfully logged in')
-            localStorage.setItem('hasPermission', '1')
+            localStorage.setItem('accessToken', '1')
             return true
+        } catch (error) {
+            if ('response' in error) {
+                if ('message' in error.response.data) {
+                    toaster.error(error.response.data.message)
+                } else {
+                    toaster.error(error.response.data)
+                }
+            }
+            console.log(error)
+            return false
+        } finally {
+            context.state.isLoading = false
+        }
+    },
+    async fetchProductList() {
+        try {
+            const response = await api.fetchProductList()
+            console.log(response)
+            return response
+        } catch (error) {
+            if ('response' in error) {
+                if ('message' in error.response.data) {
+                    toaster.error(error.response.data.message)
+                } else {
+                    toaster.error(error.response.data)
+                }
+            }
+            console.log(error)
+            return false
+        }
+    },
+    async searchProduct(context) {
+        try {
+            context.state.isLoading = true
+            return await api.searchProduct(context.state.search.term)
         } catch (error) {
             if ('response' in error) {
                 if ('message' in error.response.data) {

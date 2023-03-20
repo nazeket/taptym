@@ -214,6 +214,10 @@ a {
   }
 }
 
+.searchBtn {
+  max-width: 100px;
+}
+
 .chat__block {
   &__image {
     img {
@@ -299,6 +303,17 @@ a {
     &::placeholder {
       color: #C7C7CC;
     }
+  }
+}
+
+.block__image {
+  border-radius: 12px 12px 0px 0px;
+  overflow: hidden;
+
+  img {
+    height: 160px;
+    width: 358px;
+    object-fit: cover;
   }
 }
 
